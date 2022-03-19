@@ -21,7 +21,10 @@ class Pdf_generator(pdf_generator_pb2_grpc.Pdf_generatorServicer):
     def create_pdf(self, request, context):
         
         Nombre = request.name
-        Apellido = request.id
+        Apellido = request.last_name
+        Genero = request.gender
+        Porcentaje = request.percentage
+        
 
         c = canvas.Canvas("Reporte.pdf", pagesize=A4)
         
@@ -30,7 +33,7 @@ class Pdf_generator(pdf_generator_pb2_grpc.Pdf_generatorServicer):
         if s is None: #Si no se genera un objeto s no guarda
             return pdf_generator_pb2.back_response(message = 'No fue posible guardar el documento')
         else: 
-            return pdf_generator_pb2.back_response(message = 'Documento guardado')
+            return pdf_generator_pb2.back_response(message = 'Documento guardado' % request.name)
 
 def serve():
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
